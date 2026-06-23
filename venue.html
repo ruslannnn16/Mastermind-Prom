@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <title>The Venue — Mastermind Prom '28</title>
+  <meta name="description" content="Explore the magnificent Grand Ballroom at Le Méridien Dhaka — venue of Mastermind Prom '28."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="prom.css"/>
+  <style>
+    #venue-hero { min-height:70vh; display:flex; align-items:flex-end; position:relative; overflow:hidden; background:linear-gradient(160deg,var(--void),var(--navy)); }
+    .vh-img { position:absolute; inset:0; background:url('public/images/venue-hero.png') center/cover; opacity:0.25; mix-blend-mode:luminosity; }
+    .vh-overlay { position:absolute; inset:0; background:linear-gradient(to top,var(--navy) 0%,rgba(253,251,247,0.5) 50%,transparent 100%); }
+    .vh-content { position:relative; z-index:2; width:100%; text-align:center; padding:8rem 1.5rem 3.5rem; }
+    .vh-title { font-family:'Playfair Display',serif; color:var(--t1); font-size:clamp(2.5rem,6vw,5rem); font-style:italic; font-weight:900; }
+
+    #vstats { background:var(--deep); border-bottom:1px solid rgba(59,130,246,0.1); padding:3.5rem 1.5rem; }
+    .vstats-grid { max-width:900px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1.5rem; text-align:center; }
+    .vsi { font-size:2.2rem; margin-bottom:0.5rem; }
+    .vsval { font-family:'Playfair Display',serif; color:var(--t1); font-size:1.1rem; font-style:italic; }
+    .vssub { font-size:0.72rem; color:var(--t3); margin-top:2px; }
+
+    #timeline { background:var(--navy); padding:6rem 1.5rem; }
+    .tl-wrap { max-width:700px; margin:3rem auto 0; position:relative; }
+    .tl-line { position:absolute; left:50%; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,transparent,rgba(212,175,55,0.4),transparent); }
+    .tli { display:flex; align-items:flex-start; gap:1.2rem; margin-bottom:2.2rem; }
+    .tli:nth-child(even) { flex-direction:row-reverse; }
+    .tli-time { font-family:'Cinzel',serif; color:var(--blue-glow); font-size:0.68rem; font-weight:600; min-width:75px; text-align:right; padding-top:0.4rem; }
+    .tli:nth-child(even) .tli-time { text-align:left; }
+    .tli-dot { flex-shrink:0; width:10px; height:10px; border-radius:50%; background:var(--gold); border:2px solid var(--navy); box-shadow:0 0 0 3px rgba(212,175,55,0.25),var(--glow-sm); margin-top:0.45rem; }
+    .tli-card { flex:1; padding:1rem 1.2rem; }
+    .tli-card h3 { font-family:'Playfair Display',serif; font-style:italic; font-size:1rem; font-weight:700; color:var(--t1); margin-bottom:0.25rem; }
+    .tli-card p  { font-size:0.8rem; color:var(--t2); }
+
+    #vmap { background:var(--deep); padding:5.5rem 1.5rem; }
+    .map-box { max-width:900px; margin:2.5rem auto 0; border:1px solid rgba(212,175,55,0.3); overflow:hidden; box-shadow:var(--glow-gold); }
+  </style>
+</head>
+<body>
+<div id="stars-layer"></div>
+<input type="checkbox" id="mcheck"/>
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo"><a href="index.html"><span class="nsub display">Mastermind</span><span class="nmain serif">Prom '28</span></a></div>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link active" href="venue.html">The Venue</a>
+      <a class="nav-link" href="register.html">Register</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+    </div>
+    <label for="mcheck" class="hamburger"><span></span><span></span><span></span></label>
+  </div>
+  <div class="mob-menu">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link active" href="venue.html">The Venue</a>
+    <a class="nav-link" href="register.html">Register</a>
+    <a class="nav-link" href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<!-- VENUE HERO -->
+<section id="venue-hero">
+  <div class="vh-img"></div>
+  <div class="hero-grid-bg"></div>
+  <div class="vh-overlay"></div>
+  <div class="vh-content">
+    <span class="stag display" style="margin-bottom:0.8rem">The Setting</span>
+    <h1 class="vh-title serif">The Grand Venue</h1>
+    <hr class="gold-div" style="max-width:220px;margin:1rem auto"/>
+    <p class="serif" style="color:rgba(238,242,255,0.7);font-style:italic;font-size:1.1rem">Le Méridien Dhaka</p>
+    <p class="display" style="color:var(--t3);font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;margin-top:0.4rem">Grand Ballroom · 14th Floor</p>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="vstats">
+  <div class="vstats-grid">
+    <div class="fade-up"><div class="vsi">🏛</div><div class="stag display">Location</div><div class="vsval serif">Le Méridien Dhaka</div><div class="vssub">14th Floor Grand Ballroom</div></div>
+    <div class="fade-up" style="transition-delay:0.1s"><div class="vsi">👥</div><div class="stag display">Capacity</div><div class="vsval serif">~300 Guests</div><div class="vssub">Banquet-style seating</div></div>
+    <div class="fade-up" style="transition-delay:0.2s"><div class="vsi">📍</div><div class="stag display">Address</div><div class="vsval serif">Nikunja 2, Dhaka</div><div class="vssub">Airport Road, Dhaka 1229</div></div>
+    <div class="fade-up" style="transition-delay:0.3s"><div class="vsi">📅</div><div class="stag display">Date</div><div class="vsval serif">1 August 2026</div><div class="vssub">Doors open at 5:30 PM</div></div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div style="max-width:900px;margin:0 auto;text-align:center">
+    <div class="fade-up"><span class="stag display">Programme of Events</span><h2 class="stitle serif">The Evening's Order</h2><hr class="gold-div" style="max-width:180px"/></div>
+    <div class="tl-wrap">
+      <div class="tl-line"></div>
+      <div class="tli fade-up"><div class="tli-time display">6:00 PM</div><div class="tli-dot"></div><div class="gcard tli-card"><h3 class="serif">Doors Open</h3><p>Guests arrive and mingle in the Grand Foyer.</p></div></div>
+      <div class="tli fade-up" style="transition-delay:0.08s"><div class="tli-time display">6:30 PM</div><div class="tli-dot"></div><div class="gcard tli-card"><h3 class="serif">Grand Entrance</h3><p>Complete Registration andstep into the mystery of the masquerade.</p></div></div>
+      <div class="tli fade-up" style="transition-delay:0.14s"><div class="tli-time display">7:00 PM</div><div class="tli-dot"></div><div class="gcard tli-card"><h3 class="serif">Gathering of the Masked</h3><p>The royal procession into the Grand Ballroom.</p></div></div>
+      <div class="tli fade-up" style="transition-delay:0.2s"><div class="tli-time display">8:00 PM</div><div class="tli-dot"></div><div class="gcard tli-card"><h3 class="serif">Gala Dinner</h3><p>A scrumptious dinner served by white-gloved attendants.</p></div></div>
+      <div class="tli fade-up" style="transition-delay:0.25s"><div class="tli-time display">9:00 PM</div><div class="tli-dot"></div><div class="gcard tli-card"><h3 class="serif">Prom King & Queen</h3><p>The coronation of Batch '28 royalty</p></div></div>
+      <div class="tli fade-up" style="transition-delay:0.3s"><div class="tli-time display">9:30 PM</div><div class="tli-dot"></div><div class="gcard tli-card"><h3 class="serif">The Grand Ball</h3><p>Dancing, Game, Music, and revelry under the chandeliers.</p></div></div>
+      <div class="tli fade-up" style="transition-delay:0.35s"><div class="tli-time display">10:30 PM</div><div class="tli-dot"></div><div class="gcard tli-card"><h3 class="serif">Farewell Waltz</h3><p>One final dance before the night draws to a close.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section id="vmap">
+  <div style="max-width:900px;margin:0 auto;text-align:center">
+    <div class="fade-up"><span class="stag display">Find Your Way</span><h2 class="stitle serif">Location</h2><p class="sdesc" style="margin-top:0.5rem">79/A Commercial Area, Airport Road, Nikunja 2, Khilkhet, Dhaka 1229</p></div>
+    <div class="map-box fade-up"><iframe title="Le Méridien Dhaka" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3649.5131786017237!2d90.41586612511794!3d23.8359043286121!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c700023fd427%3A0x641522159780e7e2!2sLe%20M%C3%A9ridien%20Dhaka!5e0!3m2!1sen!2sbd!4v1782234509851!5m2!1sen!2sbd" width="100%" height="420" style="border:0;display:block;" allowfullscreen loading="lazy"></iframe></div>
+    <div style="margin-top:2.5rem"><a class="btn-gold" href="register.html">Register Your Attendance</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><div class="fo display">❧ ✦ ❧</div><h2 class="serif">Mastermind Prom '28</h2><div class="ftag display">Masquerade Ball</div></div>
+    <div class="fdiv"></div>
+    <div class="footer-grid">
+      <div class="footer-col"><h3 class="display">Navigate</h3><ul><li><a href="index.html">Home</a></li><li><a href="venue.html">The Venue</a></li><li><a href="register.html">Register</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h3 class="display">Follow Us</h3><p style="margin-bottom:1rem">Follow us on Instagram for updates.</p><a href="https://www.instagram.com/mmprom28/" target="_blank" rel="noopener" class="social-pill ig"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>@mmprom28</a></div>
+    </div>
+    <div class="fdiv"></div>
+    <div class="footer-bottom"><span>© 2028 Mastermind Prom '28 Organising Committee.</span></div>
+  </div>
+</footer>
+<script src="prom-nav.js"></script>
+</body>
+</html>

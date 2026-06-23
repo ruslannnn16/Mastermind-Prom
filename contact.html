@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <title>Contact — Mastermind Prom '28</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="prom.css"/>
+  <style>
+    #c-hero { min-height:52vh; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; background:linear-gradient(160deg,var(--void) 0%,var(--navy) 100%); padding:8rem 1.5rem 4rem; text-align:center; }
+    #c-body { background:var(--deep); padding:5rem 1.5rem; }
+    .letter { max-width:680px; margin:0 auto; }
+    .lp { background:rgba(255,255,255,0.85); backdrop-filter:blur(20px); border:1px solid rgba(212,175,55,0.3); padding:3rem; position:relative; box-shadow:0 8px 40px rgba(0,0,0,0.05),var(--glow-gold); }
+    .lp::before,.lp::after { content:'✦'; position:absolute; color:rgba(212,175,55,0.3); font-size:0.7rem; }
+    .lp::before{top:8px;left:8px;}.lp::after{top:8px;right:8px;}
+    .lb-corner{position:absolute;color:rgba(212,175,55,0.3);font-size:0.7rem;}.lb-corner.b1{bottom:8px;left:8px;}.lb-corner.b2{bottom:8px;right:8px;}
+    .lhead { text-align:center; margin-bottom:2rem; }
+    .lhead h2 { font-family:'Playfair Display',serif; color:var(--sky); font-style:italic; font-size:1.4rem; font-weight:700; }
+    .lhead small { font-size:0.75rem; color:var(--t3); display:block; margin-top:4px; }
+    .lfoot { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem; margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(212,175,55,0.2); }
+    .lsig { font-family:'Playfair Display',serif; font-style:italic; color:var(--t3); font-size:0.85rem; }
+    .lsig strong { font-family:'Inter',sans-serif; font-style:normal; color:var(--t2); }
+    .sent { display:none; text-align:center; padding:3rem 0; }
+    .sent.show { display:block; animation:sStep 0.5s ease; }
+    @keyframes sStep { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    .socials-grid { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin:2rem 0 3rem; }
+    .contact-info { max-width:680px; margin:3rem auto 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; }
+    .ci { padding:1.2rem 1.5rem; text-align:center; }
+    .ci-icon { font-size:1.8rem; margin-bottom:0.5rem; }
+    .ci-label { font-family:'Cinzel',serif; color:var(--blue-glow); font-size:0.55rem; letter-spacing:0.25em; text-transform:uppercase; margin-bottom:0.3rem; }
+    .ci-val { font-size:0.85rem; color:var(--t2); }
+  </style>
+</head>
+<body>
+<div id="stars-layer"></div>
+<input type="checkbox" id="mcheck"/>
+<nav id="navbar" class="scrolled">
+  <div class="nav-inner">
+    <div class="nav-logo"><a href="index.html"><span class="nsub display">Mastermind</span><span class="nmain serif">Prom '28</span></a></div>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="venue.html">The Venue</a>
+      <a class="nav-link" href="register.html">Register</a>
+      <a class="nav-link active" href="contact.html">Contact</a>
+    </div>
+    <label for="mcheck" class="hamburger"><span></span><span></span><span></span></label>
+  </div>
+  <div class="mob-menu"><a class="nav-link" href="index.html">Home</a><a class="nav-link" href="venue.html">Venue</a><a class="nav-link" href="register.html">Register</a><a class="nav-link active" href="contact.html">Contact</a></div>
+</nav>
+
+<section id="c-hero">
+  <div class="hero-grid-bg"></div>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(212,175,55,0.15),transparent 70%)"></div>
+  <div style="position:relative;z-index:2">
+    <span class="stag display">❧ The Town Chronicles ❧</span>
+    <h1 class="stitle serif" style="font-size:clamp(2.5rem,6vw,4.5rem)">Send a Letter</h1>
+    <hr class="gold-div" style="max-width:220px;margin:1rem auto"/>
+    <p class="serif" style="color:var(--t2);font-style:italic;font-size:1rem;max-width:460px;margin:0 auto">Address your correspondence to the Organising Committee. We shall reply with all due haste.</p>
+  </div>
+</section>
+
+<section id="c-body">
+
+  <!-- Social links -->
+  <div style="text-align:center;margin-bottom:1rem">
+    <span class="stag display">Connect With Us</span>
+  </div>
+  <div class="socials-grid">
+    <a href="https://www.instagram.com/mmprom28/" target="_blank" rel="noopener" class="social-pill ig">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      @mmprom28 — Instagram
+    </a>
+  </div>
+
+  <!-- Contact cards -->
+  <div class="contact-info">
+    <div class="gcard ci fade-up"><div class="ci-icon">📧</div><div class="ci-label display">Email</div><div class="ci-val">mmprom28@gmail.com</div></div>
+    <div class="gcard ci fade-up" style="transition-delay:0.1s"><div class="ci-icon">📱</div><div class="ci-label display">WhatsApp</div><div class="ci-val">+8801734523070</div></div>
+    <div class="gcard ci fade-up" style="transition-delay:0.2s"><div class="ci-icon">📷</div><div class="ci-label display">Instagram</div><div class="ci-val"><a href="https://instagram.com/mmprom28" target="_blank" style="color:inherit;text-decoration:none">@mmprom28</a></div></div>
+  </div>
+
+  <!-- Contact form -->
+  <div class="letter" style="margin-top:3rem">
+    <div id="cfw" class="fade-up" style="transition-delay:0.1s">
+      <div class="lp">
+        <div class="lb-corner b1">✦</div><div class="lb-corner b2">✦</div>
+        <div class="lhead">
+          <h2 class="serif">To the Organising Committee</h2>
+          <small>Mastermind Prom '28 · Le Méridien Dhaka</small>
+        </div>
+        <hr class="gold-div"/>
+        <form id="cform" novalidate>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem">
+            <div class="field"><label>Your Name *</label><input id="cn" type="text" placeholder="Full name"/></div>
+            <div class="field"><label>Email Address *</label><input id="ce" type="email" placeholder="your@email.com"/></div>
+          </div>
+          <div class="field"><label>Subject</label><input id="cs" type="text" placeholder="The nature of your enquiry..."/></div>
+          <div class="field"><label>Your Message *</label><textarea id="cm" rows="7" placeholder="Write your message here..."></textarea></div>
+          <div id="cerr" class="errmsg"></div>
+          <div class="lfoot">
+            <div class="lsig">Sealed with sincerity,<br><strong id="csig">Your Name</strong></div>
+            <button type="submit" class="btn-primary" id="csub">Send Letter →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="csent" class="sent">
+      <div style="font-size:5rem;margin-bottom:1.5rem">✉️</div>
+      <h2 class="stitle serif">Your Letter Has Been Dispatched</h2>
+      <p class="sdesc" style="max-width:380px;margin:1.5rem auto">The Committee has received your correspondence and shall reply at the earliest opportunity.</p>
+      <a class="btn-primary" href="index.html">Return Home</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><div class="fo display">❧ ✦ ❧</div><h2 class="serif">Mastermind Prom '28</h2><div class="ftag display">Masquerade Ball</div></div>
+    <div class="fdiv"></div>
+    <div class="footer-bottom"><span>© 2028 Mastermind Prom '28 Organising Committee.</span><a href="https://www.instagram.com/mmprom28/" target="_blank" style="color:inherit;text-decoration:none;opacity:0.6">@mmprom28</a></div>
+  </div>
+</footer>
+
+<script src="prom-nav.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+// IMPORTANT: You MUST replace these with your actual EmailJS keys for the form to work
+(function() {
+  emailjs.init({ publicKey: "2Vvj2pL1FWzb4_lzS" });
+})();
+
+document.getElementById('cn')?.addEventListener('input',function(){document.getElementById('csig').textContent=this.value||'Your Name';});
+document.getElementById('cform').addEventListener('submit',function(e){
+  e.preventDefault();
+  const n=document.getElementById('cn').value.trim(),em=document.getElementById('ce').value.trim(),subj=document.getElementById('cs').value.trim(),msg=document.getElementById('cm').value.trim();
+  if(!n||!em||!msg){const el=document.getElementById('cerr');el.textContent='Please fill in all required fields.';el.classList.add('show');return;}
+  document.getElementById('cerr').classList.remove('show');
+  
+  const btn=document.getElementById('csub');btn.textContent='Dispatching...';btn.disabled=true;
+  
+  emailjs.send("service_sdkkpcu", "template_tdznd7m", {
+    from_name: n,
+    reply_to: em,
+    subject: subj || "New Contact Form Message",
+    message: msg
+  }).then(() => {
+    document.getElementById('cfw').style.display='none';
+    document.getElementById('csent').classList.add('show');
+  }, (error) => {
+    btn.textContent='Send Letter →'; btn.disabled=false;
+    const el=document.getElementById('cerr');
+    el.textContent='Failed to dispatch letter. Have you configured your EmailJS keys?';
+    el.classList.add('show');
+    console.error('EmailJS Error:', error);
+  });
+});
+</script>
+</body>
+</html>

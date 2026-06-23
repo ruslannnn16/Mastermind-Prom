@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <title>Admin Dashboard — Mastermind Prom '28</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="prom.css"/>
+  <style>
+    body { background: var(--void); }
+    #admin-nav {
+      background: rgba(253,251,247,0.98); border-bottom: 1px solid rgba(212,175,55,0.2);
+      padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .db-logo { font-family: 'Cinzel', serif; color: var(--t1); font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; }
+    .db-logo span { color: var(--blue-glow); }
+    
+    #login-sec { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: absolute; inset: 0; background: var(--void); z-index: 200; }
+    .login-card { background: var(--card); border: 1px solid rgba(59,130,246,0.2); padding: 3rem; text-align: center; border-radius: 4px; box-shadow: var(--glow-blue); max-width: 400px; width: 100%; }
+    
+    #dashboard { padding: 3rem 2rem; max-width: 1400px; margin: 0 auto; display: none; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+    .stat-card { background: var(--navy); border: 1px solid rgba(59,130,246,0.2); padding: 1.5rem; border-radius: 4px; border-left: 3px solid var(--blue-glow); }
+    .stat-lbl { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--t3); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .stat-val { font-size: 2rem; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--t1); }
+    
+    .table-wrap { overflow-x: auto; background: var(--navy); border: 1px solid rgba(212,175,55,0.2); border-radius: 4px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 1rem 1.2rem; border-bottom: 1px solid rgba(212,175,55,0.1); font-size: 0.85rem; vertical-align: top; }
+    th { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--t2); text-transform: uppercase; background: rgba(212,175,55,0.05); }
+    tr:hover { background: rgba(212,175,55,0.03); }
+    .acts { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .btn-sm { padding: 0.3rem 0.6rem; font-size: 0.7rem; cursor: pointer; border: none; font-family: 'Inter', sans-serif; border-radius: 2px; }
+    .btn-approve { background: rgba(34,197,94,0.15); color: #4ADE80; border: 1px solid rgba(34,197,94,0.3); }
+    .btn-reject { background: rgba(239,68,68,0.15); color: #F87171; border: 1px solid rgba(239,68,68,0.3); }
+    .btn-email { background: rgba(56,189,248,0.15); color: #38BDF8; border: 1px solid rgba(56,189,248,0.3); }
+    .btn-del { background: rgba(255,255,255,0.05); color: var(--t2); border: 1px solid rgba(255,255,255,0.1); }
+    
+    /* Email Modal */
+    #email-modal { display:none; position:fixed; inset:0; background:rgba(253,251,247,0.9); z-index:300; align-items:center; justify-content:center; backdrop-filter:blur(5px); }
+    .em-card { background:var(--card); border:1px solid rgba(212,175,55,0.3); padding:2.5rem; width:100%; max-width:600px; border-radius:4px; box-shadow:0 10px 40px rgba(0,0,0,0.05),var(--glow-gold); }
+    .em-close { float:right; background:none; border:none; color:var(--t3); font-size:1.5rem; cursor:pointer; }
+    .em-close:hover { color:var(--t1); }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY -->
+<div id="login-sec">
+  <div class="login-card">
+    <div style="font-size:2.5rem; margin-bottom:1rem">🗝️</div>
+    <h2 class="serif" style="margin-bottom:0.5rem; font-size:1.5rem">Admin Access</h2>
+    <p style="font-size:0.8rem; color:var(--t2); margin-bottom:2rem">Mastermind Prom '26</p>
+    <div class="field" style="text-align:left">
+      <label>Password</label>
+      <input type="password" id="pwd" placeholder="Enter admin password..." onkeypress="if(event.key==='Enter') login()"/>
+    </div>
+    <div id="l-err" class="errmsg"></div>
+    <button class="btn-primary" style="width:100%; margin-top:1rem" onclick="login()">Enter</button>
+  </div>
+</div>
+
+<nav id="admin-nav" style="display:none">
+  <div class="db-logo">MM'26 <span>Admin</span></div>
+  <a class="nav-link" href="index.html" style="font-size:0.7rem">← Return to Site</a>
+</nav>
+
+<div id="dashboard">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+    <h1 class="stitle serif" style="margin-bottom:0">Registrations</h1>
+    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+      <button class="btn-primary" style="padding:0.6rem 1.2rem; font-size:0.6rem" onclick="openEmailModal('Approved', 'all_approved')">✉️ Email Approved</button>
+      <button class="btn-ghost" style="padding:0.6rem 1.2rem; font-size:0.6rem" onclick="openEmailModal('Everyone', 'all')">✉️ Email All</button>
+    </div>
+  </div>
+  
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-lbl">Total Registrations</div>
+      <div class="stat-val" id="s-tot">0</div>
+    </div>
+    <div class="stat-card" style="border-left-color:#4ADE80">
+      <div class="stat-lbl">Approved</div>
+      <div class="stat-val" style="color:#4ADE80" id="s-app">0</div>
+    </div>
+    <div class="stat-card" style="border-left-color:#EAB308">
+      <div class="stat-lbl">Pending Review</div>
+      <div class="stat-val" style="color:#FDE047" id="s-pen">0</div>
+    </div>
+    <div class="stat-card" style="border-left-color:#F87171">
+      <div class="stat-lbl">Rejected</div>
+      <div class="stat-val" style="color:#FCA5A5" id="s-rej">0</div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Ref ID</th>
+          <th>Details</th>
+          <th>Contact</th>
+          <th>Payment</th>
+          <th>Dietary</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <!-- JS injects rows here -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EMAIL MODAL -->
+<div id="email-modal">
+  <div class="em-card">
+    <button class="em-close" onclick="closeEmailModal()">×</button>
+    <h2 class="serif" style="color:var(--sky); font-size:1.5rem; margin-bottom:1.5rem">Send Official Email</h2>
+    <div class="field">
+      <label>To:</label>
+      <input type="text" id="em-to" readonly style="background:rgba(255,255,255,0.05); color:var(--t3)"/>
+      <input type="hidden" id="em-target"/>
+    </div>
+    <div class="field">
+      <label>Subject:</label>
+      <input type="text" id="em-subj" value="Important Update: Mastermind Prom '28"/>
+    </div>
+    <div class="field">
+      <label>Message:</label>
+      <textarea id="em-msg" rows="8" placeholder="Type your confirmation or update message here..."></textarea>
+    </div>
+    <div id="em-err" class="errmsg"></div>
+    <div style="text-align:right; margin-top:1.5rem">
+      <button class="btn-primary" id="em-send" onclick="sendEmail()">Dispatch Email</button>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+// IMPORTANT: Replace with actual EmailJS keys
+(function() { emailjs.init({ publicKey: "2Vvj2pL1FWzb4_lzS" }); })();
+
+// Mock Login
+function login() {
+  const p = document.getElementById('pwd').value;
+  if(p === 'prom2026' || p === 'admin') {
+    document.getElementById('login-sec').style.display = 'none';
+    document.getElementById('admin-nav').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'block';
+    loadData();
+  } else {
+    const el = document.getElementById('l-err');
+    el.textContent = 'Incorrect password.'; el.classList.add('show');
+  }
+}
+
+// Global variables
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFEhNh94rsO3l3_MyHgqmJN-KII4NIP9XplvKj0FcS4y_eS8dVshf-WXi_BjLec4FX/exec";
+let globalRegs = [];
+
+// Load Data from Google Sheets
+function loadData() {
+  const tb = document.getElementById('tbody');
+  tb.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:3rem 0">Loading data from Database...</td></tr>';
+  
+  fetch(SCRIPT_URL)
+    .then(res => res.json())
+    .then(regs => {
+      globalRegs = regs;
+      document.getElementById('s-tot').textContent = regs.length;
+      document.getElementById('s-app').textContent = regs.filter(r=>r.status==='approved').length;
+      document.getElementById('s-pen').textContent = regs.filter(r=>r.status==='pending').length;
+      document.getElementById('s-rej').textContent = regs.filter(r=>r.status==='rejected').length;
+
+      if(regs.length === 0) {
+        tb.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:3rem 0">No registrations found yet.</td></tr>';
+        return;
+      }
+
+      regs.sort((a,b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+
+      tb.innerHTML = regs.map(r => `
+        <tr id="row-${r.id}">
+      <td>
+        <span style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--blue-glow);font-weight:700">${r.bookingRef}</span><br>
+        <span style="color:var(--t3);font-size:0.65rem">${new Date(r.submittedAt).toLocaleDateString()}</span>
+      </td>
+      <td>
+        <strong style="color:var(--t1)">${r.fullName}</strong><br>
+        <span style="color:var(--t2);font-size:0.75rem">${r.batch} | ${r.school}</span>
+      </td>
+      <td>
+        <span style="color:var(--t2);font-size:0.75rem">
+          📧 ${r.email}<br>
+          📱 ${r.phone}<br>
+          🚨 ${r.emergencyContact}
+        </span>
+      </td>
+      <td>
+        <span style="color:var(--t2);font-size:0.75rem">
+          Txn: <span style="font-family:monospace;color:var(--sky)">${r.transactionId}</span><br>
+          bKash: ${r.sendingBkash}
+        </span>
+      </td>
+      <td style="color:var(--t2);font-size:0.75rem;max-width:150px">${r.dietary || 'None'}</td>
+      <td><span class="badge ${r.status}">${r.status}</span></td>
+      <td>
+        <div class="acts">
+          ${r.status === 'pending' ? `
+            <button class="btn-sm btn-approve" onclick="setStatus('${r.id}','approved')">Approve</button>
+            <button class="btn-sm btn-reject" onclick="setStatus('${r.id}','rejected')">Reject</button>
+          ` : ''}
+          <button class="btn-sm btn-email" onclick="openEmailModal('${r.fullName} (${r.email})', '${r.email}')">Email</button>
+          <button class="btn-sm btn-del" onclick="deleteReg('${r.id}')">Del</button>
+        </div>
+      </td>
+        </tr>
+      `).join('');
+    })
+    .catch(err => {
+      console.error(err);
+      tb.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#ef4444;padding:3rem 0">Failed to load data. Make sure your Google Apps Script is running.</td></tr>';
+    });
+}
+
+function setStatus(id, stat) {
+  const row = document.getElementById('row-' + id);
+  if(row) row.style.opacity = '0.5';
+  
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify({ action: "updateStatus", id: id, status: stat })
+  }).then(() => loadData()).catch(e => {
+    alert("Error updating status. Please try again.");
+    loadData();
+  });
+}
+
+function deleteReg(id) {
+  if(!confirm('Delete this registration permanently?')) return;
+  
+  const row = document.getElementById('row-' + id);
+  if(row) row.style.opacity = '0.5';
+  
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify({ action: "delete", id: id })
+  }).then(() => loadData()).catch(e => {
+    alert("Error deleting registration. Please try again.");
+    loadData();
+  });
+}
+
+// EMAIL SYSTEM
+function openEmailModal(toLabel, targetValue) {
+  document.getElementById('em-to').value = toLabel;
+  document.getElementById('em-target').value = targetValue;
+  document.getElementById('email-modal').style.display = 'flex';
+  document.getElementById('em-err').classList.remove('show');
+}
+function closeEmailModal() {
+  document.getElementById('email-modal').style.display = 'none';
+}
+function sendEmail() {
+  const target = document.getElementById('em-target').value;
+  const subj = document.getElementById('em-subj').value;
+  const msg = document.getElementById('em-msg').value;
+  
+  if(!msg) {
+    const el = document.getElementById('em-err');
+    el.textContent = "Message cannot be empty."; el.classList.add('show');
+    return;
+  }
+  
+  let emails = [];
+  try {
+    const all = globalRegs;
+    if(target === 'all_approved') emails = all.filter(r=>r.status==='approved').map(r=>r.email);
+    else if(target === 'all') emails = all.map(r=>r.email);
+    else emails = [target]; // Single email
+  } catch(e){}
+  
+  if(emails.length === 0) {
+    const el = document.getElementById('em-err');
+    el.textContent = "No valid recipients found."; el.classList.add('show');
+    return;
+  }
+  
+  const btn = document.getElementById('em-send');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  
+  // NOTE: EmailJS usually requires you to specify the recipient in the template parameters.
+  // Assuming your template has a {{to_email}} variable. If sending to multiple, 
+  // you might need to loop through them or use BCC if your template supports it.
+  
+  // For demonstration, we'll send them one by one. (In production with free tier, careful of limits).
+  let promises = emails.map(email => {
+    return emailjs.send("service_sdkkpcu", "template_b29kngq", {
+      to_email: email,
+      subject: subj,
+      message: msg
+    });
+  });
+  
+  Promise.all(promises).then(() => {
+    btn.textContent = 'Dispatch Email'; btn.disabled = false;
+    alert(`Successfully sent ${emails.length} email(s)!`);
+    closeEmailModal();
+  }).catch(err => {
+    btn.textContent = 'Dispatch Email'; btn.disabled = false;
+    const el = document.getElementById('em-err');
+    el.textContent = "Error sending emails. Have you set up your EmailJS keys?";
+    el.classList.add('show');
+    console.error(err);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <title>Register — Mastermind Prom '28</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="prom.css"/>
+  <style>
+    #reg-page { min-height:100vh; background:linear-gradient(160deg,var(--void) 0%,var(--navy) 60%,var(--deep) 100%); padding:8rem 1.5rem 5rem; position:relative; }
+    .reg-hd { text-align:center; max-width:600px; margin:0 auto 3rem; }
+    .steps-row { display:flex; align-items:center; justify-content:center; gap:0; max-width:340px; margin:0 auto 1rem; }
+    .sdot { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Cinzel',serif; font-size:0.8rem; border:1.5px solid rgba(59,130,246,0.2); color:var(--t3); transition:all 0.4s; }
+    .sdot.active { background:linear-gradient(135deg,var(--blue-md),var(--blue-br)); border-color:var(--blue-br); color:#fff; box-shadow:var(--glow-sm); }
+    .sdot.done   { background:rgba(59,130,246,0.15); border-color:rgba(59,130,246,0.4); color:var(--blue-glow); }
+    .sbar { flex:1; height:1px; max-width:55px; background:rgba(59,130,246,0.12); transition:background 0.4s; }
+    .sbar.done { background:rgba(59,130,246,0.5); }
+    .slabels { display:flex; justify-content:space-between; max-width:340px; margin:0 auto 2.5rem; padding:0 6px; }
+    .slabels span { font-family:'Cinzel',serif; font-size:0.5rem; letter-spacing:0.15em; color:var(--t3); text-transform:uppercase; }
+    .fcard { max-width:640px; margin:0 auto; background:rgba(255,255,255,0.85); backdrop-filter:blur(20px); border:1px solid rgba(212,175,55,0.4); padding:2.5rem; box-shadow:0 8px 40px rgba(0,0,0,0.05),var(--glow-gold); position:relative; }
+    .fs { display:none; }
+    .fs.active { display:block; animation:sStep 0.35s ease; }
+    @keyframes sStep { from{opacity:0;transform:translateX(16px)} to{opacity:1;transform:translateX(0)} }
+    .steptitle { font-family:'Playfair Display',serif; color:var(--blue-glow); font-size:1.2rem; font-style:italic; margin-bottom:1.5rem; }
+    .fnav { display:flex; justify-content:space-between; align-items:center; margin-top:2rem; }
+    .pibox { background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); border-left:3px solid var(--gold); padding:1rem 1.2rem; margin-bottom:1.5rem; }
+    .pibox .pil { font-family:'Cinzel',serif; color:var(--blue-glow); font-size:0.57rem; letter-spacing:0.22em; text-transform:uppercase; margin-bottom:0.4rem; }
+    .pibox p { font-size:0.8rem; color:var(--t2); line-height:1.65; margin-bottom:0.5rem; }
+    
+    .tc-box {
+      background: rgba(255,255,255,0.6); border: 1px solid rgba(212,175,55,0.3); 
+      padding: 1.5rem; max-height: 250px; overflow-y: auto; 
+      font-size: 0.75rem; color: var(--t2); line-height: 1.6;
+      margin-top: 1.5rem; margin-bottom: 1rem;
+    }
+    .tc-box h4 { color: var(--blue-glow); font-family: 'Playfair Display', serif; font-size: 0.9rem; margin-top: 1rem; margin-bottom: 0.3rem; }
+    .tc-box h4:first-child { margin-top: 0; }
+    .tc-box ul { padding-left: 1.5rem; margin-top: 0.5rem; }
+    
+    .cbox label { display:flex; align-items:center; gap:0.6rem; cursor:pointer; font-size:0.8rem; color:var(--t1); line-height:1.55; }
+    .cbox input { accent-color:var(--blue-br); flex-shrink:0; width: 16px; height: 16px; }
+
+    /* SUCCESS */
+    #suc { display:none; position:fixed; inset:0; background:rgba(253,251,247,0.97); z-index:500; flex-direction:column; align-items:center; justify-content:center; padding:2rem; text-align:center; backdrop-filter:blur(12px); }
+    #suc.show { display:flex; animation:sStep 0.6s ease; }
+    .seal { width:120px; height:120px; border-radius:50%; margin:0 auto 2rem; background:radial-gradient(circle at 35% 35%,#D4AF37,#B58D22); display:flex; align-items:center; justify-content:center; font-size:3rem; box-shadow:0 8px 40px rgba(212,175,55,0.3),0 0 0 4px rgba(212,175,55,0.2),var(--glow-gold); animation:sealPop 0.8s cubic-bezier(0.34,1.56,0.64,1) both; }
+    @keyframes sealPop { from{transform:scale(0) rotate(-30deg)} to{transform:scale(1) rotate(0)} }
+    .refbox { background:rgba(255,255,255,0.9); border:1px solid rgba(212,175,55,0.4); padding:1.2rem 2.5rem; display:inline-block; margin:1.5rem 0; box-shadow:var(--glow-gold); }
+    .reflbl { font-family:'Cinzel',serif; color:var(--blue-glow); font-size:0.57rem; letter-spacing:0.3em; text-transform:uppercase; margin-bottom:0.4rem; }
+    .refval { font-family:'Cinzel',serif; color:var(--sky); font-size:2rem; font-weight:700; letter-spacing:0.15em; text-shadow:0 0 20px rgba(56,189,248,0.5); }
+  </style>
+</head>
+<body>
+<div id="stars-layer"></div>
+<input type="checkbox" id="mcheck"/>
+<nav id="navbar" class="scrolled">
+  <div class="nav-inner">
+    <div class="nav-logo"><a href="index.html"><span class="nsub display">Mastermind</span><span class="nmain serif">Prom '28</span></a></div>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="venue.html">The Venue</a>
+      <a class="nav-link active" href="register.html">Register</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+    </div>
+    <label for="mcheck" class="hamburger"><span></span><span></span><span></span></label>
+  </div>
+  <div class="mob-menu"><a class="nav-link" href="index.html">Home</a><a class="nav-link" href="venue.html">Venue</a><a class="nav-link active" href="register.html">Register</a><a class="nav-link" href="contact.html">Contact</a></div>
+</nav>
+
+<section id="reg-page">
+  <div class="hero-grid-bg" style="position:fixed"></div>
+  <div class="reg-hd fade-up">
+    <span class="stag display">❧ Secure Your Seat ❧</span>
+    <h1 class="stitle serif">Register Your Attendance</h1>
+    <hr class="gold-div" style="max-width:200px"/>
+  </div>
+
+  <div class="steps-row">
+    <div class="sdot active display" id="sd1">1</div>
+    <div class="sbar" id="sb1"></div>
+    <div class="sdot display" id="sd2">2</div>
+    <div class="sbar" id="sb2"></div>
+    <div class="sdot display" id="sd3">3</div>
+  </div>
+  <div class="slabels"><span class="display">Personal</span><span class="display">Guest</span><span class="display">Payment</span></div>
+
+  <div class="fcard fade-up" style="transition-delay:0.1s">
+    <span class="corner tl">✦</span><span class="corner tr">✦</span>
+    <span class="corner bl">✦</span><span class="corner br">✦</span>
+    <form id="rform" novalidate>
+
+      <!-- STEP 1 -->
+      <div class="fs active" id="fs1">
+        <h2 class="steptitle serif">I. Personal Details</h2>
+        <hr class="gold-div"/>
+        <div class="field"><label>Full Name *</label><input id="rn" type="text" placeholder="Your full name"/></div>
+        <div class="field"><label>Email Address *</label><input id="re" type="email" placeholder="your@email.com (1 entry per email)"/></div>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="field"><label>Mobile Number *</label><input id="rp" type="tel" placeholder="+880 1XXXXXXXXX"/></div>
+          <div class="field"><label>Emergency Contact *</label><input id="rec" type="tel" placeholder="Parents Number"/></div>
+        </div>
+
+        <div class="field"><label>Facebook/Instagram Profile Link</label><input id="rso" type="url" placeholder="https://instagram.com/..."/></div>
+        
+        <div class="field"><label>Which Batch are you from? *</label>
+          <select id="rb">
+            <option value="">Select...</option>
+            <option>Batch '28</option>
+            <option>Batch '27</option>
+            <option>Batch '26</option>
+          </select>
+        </div>
+
+        <div id="e1" class="errmsg"></div>
+        <div class="fnav"><div></div><button type="button" class="btn-primary" onclick="gs(2)">Continue →</button></div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="fs" id="fs2">
+        <h2 class="steptitle serif">II. School & Dietary</h2>
+        <hr class="gold-div"/>
+        
+        <div class="field">
+          <label>Which School? *</label>
+          <div class="radios" style="flex-wrap:wrap">
+            <label><input type="radio" name="rsch" value="Mastermind Dhanmondi" onchange="tsch(false)"> Mastermind Dhanmondi</label>
+            <label><input type="radio" name="rsch" value="Mastermind Uttara" onchange="tsch(false)"> Mastermind Uttara</label>
+            <label><input type="radio" name="rsch" value="Other" onchange="tsch(true)"> Other</label>
+          </div>
+        </div>
+        <div id="school-other-div" class="field" style="display:none">
+          <label>Please specify your school *</label>
+          <input id="rscho" type="text" placeholder="School Name"/>
+        </div>
+
+        <div class="field" style="margin-top:2rem">
+          <label>Do you have any dietary restrictions?</label>
+          <div class="radios">
+            <label><input type="radio" name="rdiet" value="no" checked onchange="tdiet(false)"> No</label>
+            <label><input type="radio" name="rdiet" value="yes" onchange="tdiet(true)"> Yes</label>
+          </div>
+        </div>
+        <div id="diet-issue-div" class="field" style="display:none">
+          <label>Please specify your dietary issue *</label>
+          <textarea id="rdi" rows="3" placeholder="Allergies, vegetarian, halal only, etc..."></textarea>
+        </div>
+
+        <div id="e2" class="errmsg"></div>
+        <div class="fnav"><button type="button" class="btn-ghost" onclick="gs(1)">← Back</button><button type="button" class="btn-primary" onclick="gs(3)">Continue →</button></div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="fs" id="fs3">
+        <h2 class="steptitle serif">III. Payment Details</h2>
+        <hr class="gold-div"/>
+        <div class="pibox">
+          <div class="pil display">Payment Method: bKash</div>
+          <p><strong style="color:var(--sky);font-size:1rem">01726643559</strong> (Send Money)</p>
+          <ul style="padding-left:1.2rem;font-size:0.75rem;color:var(--t2);line-height:1.6;margin-bottom:1rem">
+            <li><strong>For Mastermind students:</strong> 3560 BDT (with charge) <br><span style="color:#FDE047">OFFER VALID ONLY TILL 26:</span> 3560 BDT</li>
+            <li><strong>For Outsiders:</strong> 4080 BDT (with charge) <br><span style="color:#FDE047">OFFER VALID ONLY TILL 26:</span> 4080 BDT</li>
+          </ul>
+          <div class="pil display" style="margin-top:1rem">Instructions</div>
+          <ol style="padding-left:1.2rem;font-size:0.75rem;color:var(--t2);line-height:1.6">
+            <li>Click "Send Money" on bKash.</li>
+            <li><strong>MENTION YOUR NAME/CLASS/SCHOOL</strong> in the bKash reference.</li>
+            <li>Note down your Transaction ID and the bKash number you sent it from.</li>
+          </ol>
+        </div>
+        
+        <div class="field"><label>Transaction ID *</label><input id="rtx" type="text" placeholder="e.g. 8N4A2BXY12"/></div>
+        <div class="field"><label>Sending bKash Number *</label><input id="rsbn" type="tel" placeholder="The number you sent money from"/></div>
+        
+        <div class="tc-box">
+          <h4>Event Disclaimer</h4>
+          <p>This event is independently organized and managed by students. Any school, educational institution, or third party associated with attendees has no involvement in the planning, management, or operation of this event and shall not be held responsible for any matter arising from it.</p>
+          
+          <h4>Participation & Responsibility</h4>
+          <p>By registering for and attending this event, participants acknowledge that their participation is entirely voluntary and that they are personally responsible for their actions, conduct, and decisions throughout the event.</p>
+          
+          <h4>Parental Consent</h4>
+          <p>All attendees must obtain permission from their parent(s) or legal guardian(s) before registering for and making payment for this event.</p>
+          <p>All attendees are expected to behave respectfully toward fellow guests, organizers, venue staff, and any invited personnel.</p>
+          <p>Harassment, bullying, discrimination, inappropriate conduct, vandalism, or disruptive behavior of any kind will not be tolerated. Organizers reserve the right to remove any attendee from the event without refund if these guidelines are violated.</p>
+          <p>The organizers and venue shall not be held liable for any accidents, injuries, illnesses, damages, theft, loss of personal belongings, or any other incidents that may occur before, during, or after the event.</p>
+          <p>Each participant accepts full responsibility for their own safety, possessions, and conduct while attending the event.</p>
+          
+          <h4>Prohibited Items</h4>
+          <p>For the safety of all attendees, prohibited items include but are not limited to:</p>
+          <ul>
+            <li>Alcohol</li>
+            <li>Cigarettes, e-cigarettes, and vaping devices</li>
+            <li>Illegal substances or drugs</li>
+            <li>Weapons or any dangerous items</li>
+          </ul>
+        </div>
+
+        <div class="field cbox">
+          <label>
+            <input type="checkbox" id="rco"/>
+            <span>By clicking this you agree to all these terms and conditions. I confirm all information is accurate, and tickets are non-refundable once approved.</span>
+          </label>
+        </div>
+        
+        <div id="e3" class="errmsg"></div>
+        <div class="fnav"><button type="button" class="btn-ghost" onclick="gs(2)">← Back</button><button type="submit" class="btn-gold">Submit Registration</button></div>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<!-- SUCCESS OVERLAY -->
+<div id="suc">
+  <div class="seal">🎭</div>
+  <h2 class="serif" style="color:var(--t1);font-size:2rem;font-style:italic;font-weight:700;margin-bottom:0.5rem">Application Received</h2>
+  <span class="display" style="color:var(--blue-glow);font-size:0.58rem;letter-spacing:0.35em;text-transform:uppercase">The Chronicles Have Noted Your Name</span>
+  <div class="refbox" style="margin-top:2rem"><div class="reflbl display">Booking Reference</div><div class="refval display" id="sref">—</div></div>
+  <p class="serif" style="font-style:italic;color:var(--t2);max-width:400px;line-height:1.8;margin:1.5rem auto;font-size:0.9rem">Your registration is <strong style="color:var(--sky)">pending verification</strong>. Upon approval, your official ticket shall be dispatched to your email.</p>
+  <a class="btn-primary" href="index.html">Return to Home</a>
+</div>
+
+<script src="prom-nav.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+(function() {
+  emailjs.init({ publicKey: "2Vvj2pL1FWzb4_lzS" });
+})();
+
+let cur=1;
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFEhNh94rsO3l3_MyHgqmJN-KII4NIP9XplvKj0FcS4y_eS8dVshf-WXi_BjLec4FX/exec";
+let existingEmails = [];
+
+// Pre-fetch emails to check duplicates and determine serial number
+fetch(SCRIPT_URL)
+  .then(res => res.json())
+  .then(data => { existingEmails = data.map(r => r.email.toLowerCase()); })
+  .catch(e => console.log('Could not load existing data'));
+
+function tsch(show) { document.getElementById('school-other-div').style.display = show ? 'block' : 'none'; }
+function tdiet(show) { document.getElementById('diet-issue-div').style.display = show ? 'block' : 'none'; }
+
+function checkEmailDuplicate(email) {
+  return existingEmails.includes(email.toLowerCase());
+}
+
+function gs(n) {
+  if(n>cur) {
+    let err='';
+    if(cur===1){
+      const em = document.getElementById('re').value.trim();
+      if(!document.getElementById('rn').value.trim()) err='Full name is required.';
+      else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) err='Valid email is required.';
+      else if(!/^\+?[\d\s\-]{7,15}$/.test(document.getElementById('rp').value)) err='Valid mobile number is required.';
+      else if(!/^\+?[\d\s\-]{7,15}$/.test(document.getElementById('rec').value)) err='Valid emergency contact is required.';
+      else if(!document.getElementById('rb').value) err='Please select your batch.';
+      else if(checkEmailDuplicate(em)) err='This email address has already been registered.';
+    }
+    if(cur===2){
+      const isOtherSch = document.querySelector('input[name="rsch"]:checked')?.value === 'Other';
+      const noSch = !document.querySelector('input[name="rsch"]:checked');
+      if(noSch) err='Please select your school.';
+      else if(isOtherSch && !document.getElementById('rscho').value.trim()) err='Please specify your school.';
+      
+      const hasDiet = document.querySelector('input[name="rdiet"]:checked')?.value === 'yes';
+      if(hasDiet && !document.getElementById('rdi').value.trim()) err='Please specify your dietary issue.';
+    }
+    
+    const eel=document.getElementById('e'+cur);
+    if(err){eel.textContent=err;eel.classList.add('show');return;}
+    eel.classList.remove('show');
+  }
+  document.getElementById('fs'+cur).classList.remove('active');
+  document.getElementById('sd'+cur).classList.remove('active');
+  if(n>cur){document.getElementById('sd'+cur).classList.add('done');if(cur<3)document.getElementById('sb'+cur).classList.add('done');}
+  else{document.getElementById('sd'+cur).classList.remove('done');document.getElementById('sb'+Math.min(n,2))?.classList.remove('done');}
+  cur=n;
+  document.getElementById('fs'+cur).classList.add('active');
+  document.getElementById('sd'+cur).classList.add('active');
+  document.getElementById('sd'+cur).classList.remove('done');
+}
+
+document.getElementById('rform').addEventListener('submit',function(e){
+  e.preventDefault();
+  const txn=document.getElementById('rtx').value.trim();
+  const sbn=document.getElementById('rsbn').value.trim();
+  const ok=document.getElementById('rco').checked;
+  
+  if(!txn){const el=document.getElementById('e3');el.textContent='Transaction ID is required.';el.classList.add('show');return;}
+  if(!sbn){const el=document.getElementById('e3');el.textContent='Sending bKash Number is required.';el.classList.add('show');return;}
+  if(!ok){const el=document.getElementById('e3');el.textContent='Please confirm you agree to the Terms and Conditions.';el.classList.add('show');return;}
+  
+  // Collect values
+  const schRadio = document.querySelector('input[name="rsch"]:checked').value;
+  const schoolName = schRadio === 'Other' ? document.getElementById('rscho').value.trim() : schRadio;
+  
+  const dietRadio = document.querySelector('input[name="rdiet"]:checked').value;
+  const dietary = dietRadio === 'yes' ? document.getElementById('rdi').value.trim() : 'None';
+  
+  let ref = '#0001';
+  try {
+    const serial = String(existingEmails.length + 1).padStart(4, '0');
+    ref = '#' + serial;
+    
+    const record = {
+      action: "add",
+      id: Date.now().toString(),
+      bookingRef: ref,
+      fullName: document.getElementById('rn').value.trim(),
+      email: document.getElementById('re').value.trim(),
+      phone: document.getElementById('rp').value.trim(),
+      emergencyContact: document.getElementById('rec').value.trim(),
+      socialLink: document.getElementById('rso').value.trim(),
+      batch: document.getElementById('rb').value,
+      school: schoolName,
+      dietary: dietary,
+      transactionId: txn,
+      sendingBkash: sbn,
+      status: 'pending',
+      submittedAt: new Date().toISOString()
+    };
+    
+    // Save to Google Sheets Database
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(record)
+    }).catch(e => console.error('DB save error:', e));
+    
+    // Notify the Admin
+    const msgBody = `New Registration Received!
+
+Name: ${document.getElementById('rn').value.trim()}
+Email: ${document.getElementById('re').value.trim()}
+Mobile: ${document.getElementById('rp').value.trim()}
+Emergency Contact: ${document.getElementById('rec').value.trim()}
+Social Link: ${document.getElementById('rso').value.trim() || 'N/A'}
+Batch: ${document.getElementById('rb').value}
+School: ${schoolName}
+Dietary: ${dietary}
+Txn ID: ${txn}
+bKash: ${sbn}
+Ref ID: ${ref}`;
+    emailjs.send("service_sdkkpcu", "template_tdznd7m", {
+      from_name: "Prom System",
+      reply_to: document.getElementById('re').value.trim(),
+      subject: `New Registration: ${ref} - ${document.getElementById('rn').value.trim()}`,
+      message: msgBody
+    });
+
+  } catch(x){}
+  
+  const subBtn = document.querySelector('button[type="submit"]');
+  subBtn.textContent = 'Submitting...'; subBtn.disabled = true;
+  
+  setTimeout(() => {
+    document.getElementById('sref').textContent = ref;
+    document.getElementById('suc').classList.add('show');
+  }, 800);
+});
+</script>
+</body>
+</html>
